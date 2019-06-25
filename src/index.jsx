@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 //import Apps from './Components/Test';
-import Transaction from './Components/User';
+import AlatPay from './componentViews/alatpay';
 
 class App extends Component {
     render() {
 
         return(
             <div className="App">
-                  <Transaction /> 
+                  <AlatPay /> 
             </div>
         )
     }
