@@ -20,7 +20,7 @@ export default class TransactionPage extends Component{
 
 function TransactionDetail(props) {
   return(
-    <div className="col-md-4">
+    <div className="col-lg-4" style={{padding:'5px'}}>
     <div className="card">
       <img className="card-img-top" src="..." alt="" />
       <div className="card-body">
