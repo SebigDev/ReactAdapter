@@ -1,7 +1,7 @@
 import React, { Component, Fragment} from 'react';
 import axios from 'axios';
 import AddTransactionPage from './add-transaction';
-import TransactionListPage from './transaction-list';
+import TransactionPage from './transaction';
 
 
 function Header(){
@@ -17,48 +17,49 @@ function Header(){
 
 class AddTransaction extends Component {
   state = {
-    bankDetails: "",
-    accountType: "",
+    bankDetails: '',
+    accountType: '',
     dateOfTransaction: new Date(),
-    traansactionStatus: false
+    transactionStatus: 'pending'
+  };
+  
+  handleBankDetailChange = (event) => {
+    this.setState({bankDetails: event.target.value });
   };
 
-  handleChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
+  handleAccountTypeChange = event => {
+    this.setState({ accountType: event.target.value });
   };
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     this.saveTransaction();
   }
 
-  async saveTransaction() {
+   saveTransaction = async() =>{
     const data = this.state;
     const url = `http://localhost:5000/api/AlatPayTransaction/CreateAlatPayTransaction`;
 
     try {
-      var response = await axios.post(url, data);
-      const bool = response.data;
-      if (bool === true) {
+         await axios.post(url, data);
+         
         console.log("Created Successfully");
-      }
+
     } catch (error) {
       console.log(error);
     }
   }
   render() {
+      const {bankDetails, accountType} = this.state
     return (
-      <div style={{ marginLeft: "30%" }}>
+      <div>
         <AddTransactionPage
           handler={this.handleSubmit}
-          transData={this.state}
-          setChange={this.handleChange}
+          bankDetails={bankDetails}
+          accountType={accountType}
+          setBankChange={this.handleBankDetailChange}
+          setAccountChange={this.handleAccountTypeChange}
         />
       </div>
     );
@@ -67,11 +68,13 @@ class AddTransaction extends Component {
 
 //
 class TransactionList extends Component {
+   
   state = {
     transactions: []
   };
 
-  async componentDidMount() {
+   componentDidMount = async () =>{
+
     const url = `http://localhost:5000/api/AlatPayTransaction/GetAll`;
    
 
@@ -81,11 +84,11 @@ class TransactionList extends Component {
       });
     });
   }
-  async reloadTransaction() {
+   reloadTransaction = () => {
     this.componentDidMount();
   }
 
-  async deleteTransaction(id) {
+   deleteTransaction = async (id) => {
     const url = `http://localhost:5000/api/AlatPayTransaction/DeleteTransaction?Id=${id}`;
     await axios.delete(url).then(response => {
       console.log(response.data);
@@ -94,11 +97,12 @@ class TransactionList extends Component {
   }
 
   render() {
+     
     const { transactions } = this.state;
     const keyPath = "";
     return (
       <div>
-        <TransactionListPage
+        <Transaction
           transListData={transactions}
           path={keyPath}
           deleteAction={this.deleteTransaction}
@@ -108,17 +112,36 @@ class TransactionList extends Component {
   }
 }
 
-
-export default class AlatPay extends Component{
+class Transaction extends Component{
     render(){
+        let trans =
+          this.props.transListData &&
+          this.props.transListData.length > 0 ? (
+            <TransactionPage data={this.props} />
+          ) : (
+            <ErrorPage />
+          );
+        return <div>{trans}</div>;
+    }
+}
+function ErrorPage(){
+    return(
+        <div className="card">
+             <h3 style={{color:'darkred'}}>
+                 No Transaction lists
+             </h3>
+        </div>
+    )
+}
+export default class AlatPay extends Component{
+  
+    render(){
+
         return (
           <Fragment>
             <Header />
             <AddTransaction />
             <TransactionList />
-            <br />
-            <br />
-  
           </Fragment>
         );
     }
