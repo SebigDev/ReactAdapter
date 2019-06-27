@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import AddTransactionPage from './pages/add-transaction-page'
+import AddTransactionPage from './pages/add-transaction-page';
+
+
 
 class AddTransaction extends Component {
     state = {
@@ -48,5 +50,5 @@ class AddTransaction extends Component {
       );
     }
   }
-
+  
   export default AddTransaction

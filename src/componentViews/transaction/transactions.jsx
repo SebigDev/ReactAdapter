@@ -51,24 +51,12 @@ class TransactionList extends Component {
   
 class Transaction extends Component{
     render(){
-        let trans =
-          this.props.transListData &&
-          this.props.transListData.length > 0 ? (
+       
+        return(
             <TransactionPage data={this.props} />
-          ) : (
-            <ErrorPage />
-          );
-        return <div>{trans}</div>;
+        );
     }
 }
-function ErrorPage(){
-    return(
-        <div className="card">
-             <h3 style={{color:'darkred'}}>
-                 No Transaction lists
-             </h3>
-        </div>
-    )
-}
+
 
   export default TransactionList

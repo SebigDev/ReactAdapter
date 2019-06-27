@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import TransactionDetails from '../transaction-detail';
 
 export default class TransactionPage extends Component{
    render(){
@@ -18,6 +19,13 @@ export default class TransactionPage extends Component{
 }
 }
 
+const redirectToDetails = (e) => {
+    console.log(e)
+   return(
+       <TransactionDetails detailData={e} />
+   )
+}
+
 function TransactionDetail(props) {
   return(
     <div className="col-lg-4" style={{padding:'5px'}}>
@@ -26,9 +34,9 @@ function TransactionDetail(props) {
       <div className="card-body">
         <h5 className="card-title">{props.entry.bankDetails}</h5>
         <p className="card-text">{props.entry.accountType}</p>
-        <a href={props.path} className="btn btn-primary">
+        <button onClick={redirectToDetails} className="btn btn-primary">
           View Details
-        </a>
+        </button>
         &nbsp;
         &nbsp;
         <button
