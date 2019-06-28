@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TransactionDetails from '../transaction-detail';
+
 
 export default class TransactionPage extends Component{
    render(){
@@ -9,6 +9,7 @@ export default class TransactionPage extends Component{
         key={entry.id}
         path={this.props.data.path}
         deleteBtn={this.props.data.deleteAction}
+        viewDetail={this.props.data.transDetail}
       />
     ));
     return (
@@ -19,12 +20,6 @@ export default class TransactionPage extends Component{
 }
 }
 
-const redirectToDetails = (e) => {
-    console.log(e)
-   return(
-       <TransactionDetails detailData={e} />
-   )
-}
 
 function TransactionDetail(props) {
   return(
@@ -34,7 +29,7 @@ function TransactionDetail(props) {
       <div className="card-body">
         <h5 className="card-title">{props.entry.bankDetails}</h5>
         <p className="card-text">{props.entry.accountType}</p>
-        <button onClick={redirectToDetails} className="btn btn-primary">
+        <button onClick={e => props.viewDetail(props.entry.id)} className="btn btn-primary">
           View Details
         </button>
         &nbsp;

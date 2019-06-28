@@ -5,8 +5,9 @@ import AddTransactionPage from './pages/add-transaction-page';
 
 
 class AddTransaction extends Component {
+    
     state = {
-      bankDetails: '',
+      bankDetails :'',
       accountType: '',
       dateOfTransaction: new Date(),
       transactionStatus: 'pending'

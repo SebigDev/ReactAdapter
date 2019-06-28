@@ -28,9 +28,7 @@ export default class Login extends Component {
             try {
                 var response = await axios.post(url, data);
                  this.props.history.push('/add-transaction');
-                console.log(response.data);
-                const token = localStorage.setItem('tokenModel', JSON.stringify(response.data));
-                console.log(token);
+                localStorage.setItem('tokenModel', JSON.stringify(response.data));
         
             } catch (error) {
               console.log(error);
