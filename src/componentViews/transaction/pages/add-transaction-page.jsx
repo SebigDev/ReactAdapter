@@ -49,10 +49,9 @@ class AddTransactionPage extends Component{
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-default"
+                  className="btn btn-danger outline"
                   style={{
                     width: "50%",
-                    backgroundColor: "darkred",
                     color: "white"
                   }}
                   onClick={e => {

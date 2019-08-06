@@ -16,7 +16,7 @@ class AddTransaction extends Component {
     handleFormChange = (event) => {
       this.setState({[event.target.name]: event.target.value });
     };
-  
+
   
     handleSubmit = (event) => {
       event.preventDefault();
@@ -31,7 +31,6 @@ class AddTransaction extends Component {
       try {
            await axios.post(url, data);
            this.props.history.push('/transactions');
-          console.log("Created Successfully");
   
       } catch (error) {
         console.log(error);

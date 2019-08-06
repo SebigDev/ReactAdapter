@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import URLS from '../route';
 export default class Login extends Component {
 
         state = {
@@ -23,15 +23,25 @@ export default class Login extends Component {
     
         saveMerchant = async() =>{
             const data = this.state;
-            const url = `http://localhost:5000/api/Merchant/MerchantLogin?emailAddress=${this.state.emailAddress}&password=${this.state.password}`;
+            const url =  URLS.BASE_URL + URLS.MERCHANT_API +`MerchantLogin?emailAddress=${this.state.emailAddress}&password=${this.state.password}`;
         
             try {
                 var response = await axios.post(url, data);
-                 this.props.history.push('/add-transaction');
-                localStorage.setItem('tokenModel', JSON.stringify(response.data));
+                
+                if(response){
+                  
+                  window.location.href = '/transactions';
+                  localStorage.setItem('tokenModel', JSON.stringify(response.data));
+                }
         
             } catch (error) {
+              if(response === undefined){
+                  alert(`Authenticating ${this.state.emailAddress} failed!!!` )
+              }
               console.log(error);
+              this.setState({
+                  text : 'Login'
+              })
             }
           }
       render() {
@@ -76,7 +86,7 @@ export default class Login extends Component {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-default"
+                  className="btn btn-outline-default"
                   style={{
                     width: "50%",
                     backgroundColor: "lightgreen",
@@ -85,7 +95,7 @@ export default class Login extends Component {
                     
                   }}
                   onClick={e => {
-                    this.handleText("Please wait while we log you in...");
+                    this.handleText("Processing...");
                   }}
                 >
                   {text}

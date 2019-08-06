@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {ALAT_TRANSACTION_URL}  from '../../route';
 import TransactionPage from './pages/transaction-list-page';
 
 
@@ -12,7 +13,7 @@ class TransactionList extends Component {
   
      componentDidMount = async () =>{
   
-      const url = `http://localhost:5000/api/AlatPayTransaction/GetAll`;
+      const url = ALAT_TRANSACTION_URL + `GetAll`;
      
   
       await axios.get(url).then(response => {
@@ -27,7 +28,7 @@ class TransactionList extends Component {
     }
   
      deleteTransaction = async (id) => {
-      const url = `http://localhost:5000/api/AlatPayTransaction/DeleteTransaction?Id=${id}`;
+      const url = ALAT_TRANSACTION_URL +`DeleteTransaction?Id=${id}`;
       await axios.delete(url).then(response => {
         console.log(response.data);
       });
@@ -37,7 +38,7 @@ class TransactionList extends Component {
   
     transactionDetail = async (id) =>{
         
-        const url = `http://localhost:5000/api/AlatPayTransaction/GetById?Id=${id}`;
+        const url = ALAT_TRANSACTION_URL + `GetById?Id=${id}`;
         try {
             await axios.get(url).then(response => {
                 let data = response.data;
@@ -47,7 +48,7 @@ class TransactionList extends Component {
                 }
               })
 
-        } catch (error) {
+      } catch (error) {
             console.log(error);
         }
     }

@@ -23,6 +23,7 @@ export default class Home extends Component {
                    Ut enim ad minim veniam, quis nostrud exercitation
                    ullamco laboris...
                  </p>
+                 <button className="btn btn-success" onClick={this.props.auth.login}>Login</button>
                </div>
                <div className="col-sm-4">
                  <h3>Column 2</h3>

@@ -6,6 +6,7 @@ export default class NavBarPage extends Component{
 
    
     render(){
+   
         
         const tokenRef = JSON.parse(localStorage.getItem('tokenModel'));
 
@@ -34,6 +35,7 @@ export default class NavBarPage extends Component{
         return (
             <ul>
             <li><Link to="/">Home</Link></li>
+            <li><Link to="/merchants">Merchants</Link></li>
             <li><Link to="/transactions">Transactions</Link></li>
             <li><Link to="/add-transaction">Add Transaction</Link></li>
             <UserLogin />

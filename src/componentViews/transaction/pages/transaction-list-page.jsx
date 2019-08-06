@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
+var Redirect = require("react-router").Redirect;
 
 
 export default class TransactionPage extends Component{
+  
    render(){
+     const token = JSON.parse(localStorage.getItem("tokenModel"));
+     
+    if(token === null){
+      return (<Redirect to="/login" />);
+   } else{
+
+   
     const res = this.props.data.transListData.map(entry => (
       <TransactionDetail
         entry={entry}
@@ -17,7 +26,7 @@ export default class TransactionPage extends Component{
          {res}
      </div>
     );
-}
+}}
 }
 
 
@@ -29,14 +38,14 @@ function TransactionDetail(props) {
       <div className="card-body">
         <h5 className="card-title">{props.entry.bankDetails}</h5>
         <p className="card-text">{props.entry.accountType}</p>
-        <button onClick={e => props.viewDetail(props.entry.id)} className="btn btn-primary">
+        <button onClick={() => props.viewDetail(props.entry.id)} className="btn btn-primary outline">
           View Details
         </button>
         &nbsp;
         &nbsp;
         <button
-          className="btn btn-danger"
-          onClick={e => props.deleteBtn(props.entry.id)}
+          className="btn btn-outline-danger"
+          onClick={() => props.deleteBtn(props.entry.id)}
         >
           Delete Transaction
         </button>
@@ -45,3 +54,5 @@ function TransactionDetail(props) {
   </div>
   )
 }
+
+
