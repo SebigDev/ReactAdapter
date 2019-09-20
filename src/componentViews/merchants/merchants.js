@@ -1,44 +1,41 @@
 import React,{Component} from "react";
-import {MERCHANT_URL}  from '../../route';
-import axios from 'axios';
 import MerchantPage from "./merchantPage";
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as merchantsActions from '../../redux/actions/merchantsActions';
+
+
 
 class Merchants extends Component {
 
-     state = {
-         merchants: []
+     componentDidMount = async () =>{ 
+         const { loadMerchants } = this.props;
+
+         loadMerchants().catch(error => {
+             alert(`${error} occured`)
+         })
      };
-
-     componentDidMount = () =>{
-        this.fetchMerchants();
-     };
-
-    fetchMerchants = async () => {
-       const url = MERCHANT_URL + "Merchants";
-        await axios.get(url).then(res =>{
-           this.setState({
-               merchants : res.data,
-           })
-       })
-
-    };
 
     addMerchant = () => {
       window.location.href = "/add-merchant";
     }
 
     render(){
-        const {merchants} = this.state;
+        let dataArray = this.props.merchants;
         return (
             <div>
                  <MerchantPage
-                  merchants={merchants}
+                  merchantList={dataArray}
                   addMerchant={this.addMerchant}
                   />
             </div>
         );
     }
+}
+
+Merchants.propTypes = {
+    loadMerchants: PropTypes.func.isRequired,
+   // merchants: PropTypes.array.isRequired
 }
 
 function mapStateToProps(state){
@@ -47,8 +44,9 @@ function mapStateToProps(state){
    }
 }
 
-function mapDispatchToProps(){
+const mapDispatchToProps = {
+       loadMerchants: merchantsActions.loadMerchants,
+ }
 
-}
 
-export default connect(mapStateToProps, mapDispatchToProps) (Merchants);
+export default connect(mapStateToProps, mapDispatchToProps)(Merchants);

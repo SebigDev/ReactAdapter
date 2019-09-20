@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {ALAT_TRANSACTION_URL}  from '../../route';
+import * as API_ROUTE  from '../../route';
+import { connect } from 'react-redux';
+import * as transactionsActions from '../../redux/actions/transactionsActions';
 import TransactionPage from './pages/transaction-list-page';
+import PropTypes from 'prop-types';
 
 
 class TransactionList extends Component {
    
     state = {
-      transactions: [],
+     // transactions: [],
       loading: true
     };
   
+  
      componentDidMount = async () =>{
-  
-      const url = ALAT_TRANSACTION_URL + `GetAll`;
-     
-  
-      await axios.get(url).then(response => {
-        this.setState({
-          transactions: response.data,
-          loading: false
-        });
-      });
-    }
+       const { loadTransactions } = this.props;
+       loadTransactions().catch(error =>{
+       alert(`Error ${error} occured`);
+  })
+  }
+
+   
      reloadTransaction = () => {
       this.componentDidMount();
     }
   
      deleteTransaction = async (id) => {
-      const url = ALAT_TRANSACTION_URL +`DeleteTransaction?Id=${id}`;
+      const url = API_ROUTE.ALAT_TRANSACTION_API +`DeleteTransaction?Id=${id}`;
       await axios.delete(url).then(response => {
         console.log(response.data);
       });
@@ -38,7 +38,7 @@ class TransactionList extends Component {
   
     transactionDetail = async (id) =>{
         
-        const url = ALAT_TRANSACTION_URL + `GetById?Id=${id}`;
+        const url = API_ROUTE.ALAT_TRANSACTION_API + `GetById?Id=${id}`;
         try {
             await axios.get(url).then(response => {
                 let data = response.data;
@@ -54,35 +54,32 @@ class TransactionList extends Component {
     }
   
     render() {
-       
-      const { transactions } = this.state;
-      const keyPath = "";
-      let data;
 
-     if(this.state.loading){
+      const keyPath = "";
+      let dataString = "";
+     let dataArray = this.props.transactions;
+     if(dataArray.length === 0){
       
-       data = (
+       dataString = (
             <div style={{margin:'20% 0% 0% 40%'}}>
                <img src='cspinner.gif' alt='' height='70' width='70'/>
             </div> 
        )
      }
      else {
-        data =  
-            <div>
-              <Transaction
-                transListData={transactions}
-                path={keyPath}
-                deleteAction={this.deleteTransaction}
-                transDetail={this.transactionDetail}
-              />
-            </div>
+        dataString =  
         
+            <Transaction
+              transListData={dataArray}
+              path={keyPath}
+              deleteAction={this.deleteTransaction}
+              transDetail={this.transactionDetail}
+            />
+  
      }
      return (
          <div>
-             {data}
-             
+             {dataString}
          </div>
      )
     }
@@ -92,12 +89,29 @@ class TransactionList extends Component {
   
 class Transaction extends Component{
     render(){
-       
         return(
-            <TransactionPage data={this.props} />
+            <TransactionPage dataSets={this.props} />
         );
     }
+
+   
+}
+
+Transaction.protoTypes = {
+  transactions: PropTypes.array.isRequired,
+  loadTransactions: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = {
+     loadTransactions: transactionsActions.loadTransactions
+}
+
+function mapStateToProps(state){
+
+   return {
+       transactions : state.transactions
+   }
 }
 
 
-  export default TransactionList
+ export default connect(mapStateToProps, mapDispatchToProps)(TransactionList);

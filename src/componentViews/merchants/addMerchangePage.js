@@ -1,7 +1,6 @@
 import React from 'react'
 
 function AddMerchantPage(props){
-    console.log("Props ",props);
     return(
         <div>
         <form 

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import AddTransactionPage from './pages/add-transaction-page';
+import * as transactionsActions from '../../redux/actions/transactionsActions';
+import PropTypes from 'prop-types';
 
 
 
 class AddTransaction extends Component {
-    
-    state = {
-      bankDetails :'',
-      accountType: '',
-      dateOfTransaction: new Date(),
-      transactionStatus: 'pending'
-    };
+ state = {
+  bankDetails : "",
+  accountType : "",
+  dateOfTransaction : new Date(),
+  transactionStatus : 'pending'
+ }
     
     handleFormChange = (event) => {
       this.setState({[event.target.name]: event.target.value });
@@ -20,22 +21,12 @@ class AddTransaction extends Component {
   
     handleSubmit = (event) => {
       event.preventDefault();
-  
-      this.saveTransaction();
+      const { createTransaction} = this.props;
+      createTransaction(this.state).catch(err =>{
+        alert(`Error ${err} occured creating transaction`);
+      })
     }
-
-     saveTransaction = async() =>{
-      const data = this.state;
-      const url = `http://localhost:5000/api/AlatPayTransaction/CreateAlatPayTransaction`;
-  
-      try {
-           await axios.post(url, data);
-           this.props.history.push('/transactions');
-  
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    
     render() {
         const {bankDetails, accountType} = this.state
       return (
@@ -50,5 +41,20 @@ class AddTransaction extends Component {
       );
     }
   }
+
+  AddTransaction.protoTypes = {
+    createTransaction: PropTypes.func.isRequired,
+    transaction: PropTypes.object.isRequired
+  }
+
+  function mapStateToProps(state){
+    return {
+       state : state
+    }
+  }
+
+  const mapDispatchToProps = {
+    createTransaction: transactionsActions.createTransaction
+  }
   
-  export default AddTransaction
+  export default connect(mapStateToProps, mapDispatchToProps)(AddTransaction)

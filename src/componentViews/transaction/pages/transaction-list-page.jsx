@@ -10,20 +10,20 @@ export default class TransactionPage extends Component{
     if(token === null){
       return (<Redirect to="/login" />);
    } else{
-
+    const res = this.props.dataSets.transListData.data;
    
-    const res = this.props.data.transListData.map(entry => (
+    const disData = res.map(entry => (
       <TransactionDetail
         entry={entry}
         key={entry.id}
-        path={this.props.data.path}
-        deleteBtn={this.props.data.deleteAction}
-        viewDetail={this.props.data.transDetail}
+        path={this.props.dataSets.path}
+        deleteBtn={this.props.dataSets.deleteAction}
+        viewDetail={this.props.dataSets.transDetail}
       />
     ));
     return (
      <div>
-         {res}
+         {disData}
      </div>
     );
 }}

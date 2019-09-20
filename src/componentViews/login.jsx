@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import URLS from '../route';
+import * as API_ROUTE  from '../route';
 export default class Login extends Component {
 
         state = {
@@ -23,7 +23,7 @@ export default class Login extends Component {
     
         saveMerchant = async() =>{
             const data = this.state;
-            const url =  URLS.BASE_URL + URLS.MERCHANT_API +`MerchantLogin?emailAddress=${this.state.emailAddress}&password=${this.state.password}`;
+            const url =  API_ROUTE.MERCHANT_API +`MerchantLogin?emailAddress=${this.state.emailAddress}&password=${this.state.password}`;
         
             try {
                 var response = await axios.post(url, data);

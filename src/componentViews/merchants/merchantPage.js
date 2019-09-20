@@ -2,7 +2,18 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 export default function MerchantPage(props){
-        var data = props.merchants.map(( entry) => {
+   
+    let dataSet = "";
+    const arr = props.merchantList;
+    if(arr.length === 0){
+        return (
+            <>
+                <p>No Merchants available.</p>
+            </>
+        )
+    }else{
+        
+         dataSet = arr.data.map(entry => {
             return (
                 
                 <tr key={entry.id}>
@@ -12,6 +23,8 @@ export default function MerchantPage(props){
               
             )
          })
+
+    }
     return (
         <div>
              <div>
@@ -24,7 +37,7 @@ export default function MerchantPage(props){
                    </button>
                </div>
 
-          <h3>Merchant Lists with {props.merchants.length} records</h3>
+          <h3>Merchant Lists with {props.merchantList.data.length} records</h3>
           <div className="container">
                 <h2>Merchant List</h2>
                           
@@ -36,7 +49,7 @@ export default function MerchantPage(props){
                     </tr>
                     </thead>
                     <tbody>
-                      {data}
+                      {dataSet}
                     </tbody>
                 </table>
                 </div>

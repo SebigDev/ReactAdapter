@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {ALAT_TRANSACTION_URL} from '../../route';
+import * as API_ROUTE  from '../../route';
 
 class TransactionDetails extends Component{
     
@@ -19,7 +19,7 @@ class TransactionDetails extends Component{
         }
         
         else{
-          const url = ALAT_TRANSACTION_URL + `GetById?Id=${transactionId}`;
+          const url = API_ROUTE.ALAT_TRANSACTION_API + `GetById?Id=${transactionId}`;
           try {
               await axios.get(url).then(response => {
                   let data = response.data;

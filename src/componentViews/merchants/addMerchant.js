@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { MERCHANT_URL } from '../../route';
-import axios from 'axios';
 import AddMerchantPage from './addMerchangePage';
 import { connect } from 'react-redux';
+import * as merchantActions from '../../redux/actions/merchantsActions';
+import PropTypes from 'prop-types';
 
  class AddMerchant extends Component {
      state = {
@@ -14,19 +14,14 @@ import { connect } from 'react-redux';
         this.setState({[event.target.name]: event.target.value });
       };
 
-     saveMerchant = async (event) =>{
-         event.preventDefault();
-       const url = MERCHANT_URL + 'RegisterMerchant';
-       const data = this.state;
-      
-       await axios.post(url, data).then(res => {
-           if(res.data != null){
-               window.location.href = "/merchants";
-           }else{
-               alert("Error Occured");
-           }
-       })
-     }
+    saveMerchant = (event) =>{
+        event.preventDefault();
+        const { createMerchant } = this.props;
+        const _data = this.state;
+        createMerchant(_data).catch(err => {
+            alert(`Error: ${err} occured`);
+        })
+    }
   render() {
       const {emailAddress, password} = this.state;
     return (
@@ -41,12 +36,23 @@ import { connect } from 'react-redux';
     )
   }
 }
- function mapStateToProps(state, ownProps){
 
+AddMerchant.protoTypes = {
+   createMerchant: PropTypes.func.isRequired,
+   merchant: PropTypes.object.isRequired
+};
+
+const mapDispatchToProps = {
+  
+  createMerchant : merchantActions.createMerchant
+}
+
+function mapStateToProps(state){
+
+    return {
+        merchants : state.merchants
+    }
  }
 
- function mapDispatchToProps(){
-     
- }
 
 export default connect(mapStateToProps, mapDispatchToProps) (AddMerchant);
